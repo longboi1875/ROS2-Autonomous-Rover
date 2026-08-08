@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot name="ubc_rover" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find rover_description)/urdf/materials.xacro"/>
+
+  <xacro:property name="wheel_radius" value="0.13"/>
+  <xacro:property name="wheel_width" value="0.08"/>
+  <xacro:property name="wheel_y" value="0.27"/>
+
+  <link name="base_footprint"/>
+  <joint name="base_footprint_joint" type="fixed">
+    <parent link="base_footprint"/><child link="base_link"/>
+    <origin xyz="0 0 0.14"/>
+  </joint>
+
+  <link name="base_link">
+    <visual><geometry><box size="0.62 0.48 0.16"/></geometry><material name="rover_green"/></visual>
+    <collision><geometry><box size="0.62 0.48 0.16"/></geometry></collision>
+    <inertial><mass value="18"/><origin xyz="0 0 0"/><inertia ixx="0.384" ixy="0" ixz="0" iyy="0.674" iyz="0" izz="0.762"/></inertial>
+  </link>
+
+  <xacro:macro name="drive_wheel" params="name y">
+    <link name="${name}_wheel_link">
+      <visual><origin rpy="1.5708 0 0"/><geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry><material name="dark_rubber"/></visual>
+      <collision><origin rpy="1.5708 0 0"/><geometry><cylinder radius="${wheel_radius}" length="${wheel_width}"/></geometry></collision>
+      <inertial><mass value="1.2"/><inertia ixx="0.006" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.006"/></inertial>
+    </link>
+    <joint name="${name}_wheel_joint" type="continuous">
+      <parent link="base_link"/><child link="${name}_wheel_link"/>
+      <origin xyz="0 ${y} 0" rpy="0 0 0"/><axis xyz="0 1 0"/>
+    </joint>
+  </xacro:macro>
+  <xacro:drive_wheel name="left" y="${wheel_y}"/>
+  <xacro:drive_wheel name="right" y="-${wheel_y}"/>
+
+  <link name="caster_link">
+    <visual><geometry><sphere radius="0.055"/></geometry><material name="dark_rubber"/></visual>
+    <collision><geometry><sphere radius="0.055"/></geometry></collision>
+    <inertial><mass value="0.2"/><inertia ixx="0.0002" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0002"/></inertial>
+  </link>
+  <joint name="caster_joint" type="fixed">
+    <parent link="base_link"/><child link="caster_link"/><origin xyz="-0.25 0 -0.1"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual><geometry><cylinder radius="0.06" length="0.07"/></geometry><material name="sensor_blue"/></visual>
+    <collision><geometry><cylinder radius="0.06" length="0.07"/></geometry></collision>
+    <inertial><mass value="0.25"/><inertia ixx="0.0002" ixy="0" ixz="0" iyy="0.0002" iyz="0" izz="0.0003"/></inertial>
+  </link>
+  <joint name="lidar_joint" type="fixed">
+    <parent link="base_link"/><child link="lidar_link"/><origin xyz="0.12 0 0.15"/>
+  </joint>
+
+  <link name="imu_link"/>
+  <joint name="imu_joint" type="fixed">
+    <parent link="base_link"/><child link="imu_link"/><origin xyz="0 0 0.06"/>
+  </joint>
+</robot>
+
