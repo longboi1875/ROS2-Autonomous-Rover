@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<sdf version="1.9">
+  <world name="rover_world">
+    <physics name="1ms" type="ignored"><max_step_size>0.001</max_step_size><real_time_factor>1.0</real_time_factor></physics>
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors"><render_engine>ogre2</render_engine></plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+
+    <light type="directional" name="sun"><cast_shadows>true</cast_shadows><pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse><specular>0.2 0.2 0.2 1</specular><direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <model name="ground"><static>true</static><link name="link">
+      <collision name="collision"><geometry><box><size>20 20 0.1</size></box></geometry></collision>
+      <visual name="visual"><geometry><box><size>20 20 0.1</size></box></geometry><material><diffuse>0.55 0.48 0.35 1</diffuse></material></visual>
+    </link></model>
+
+    <model name="north_wall"><static>true</static><pose>0 6 0.5 0 0 0</pose><link name="link"><collision name="c"><geometry><box><size>12 0.2 1</size></box></geometry></collision><visual name="v"><geometry><box><size>12 0.2 1</size></box></geometry></visual></link></model>
+    <model name="south_wall"><static>true</static><pose>0 -6 0.5 0 0 0</pose><link name="link"><collision name="c"><geometry><box><size>12 0.2 1</size></box></geometry></collision><visual name="v"><geometry><box><size>12 0.2 1</size></box></geometry></visual></link></model>
+    <model name="east_wall"><static>true</static><pose>6 0 0.5 0 0 0</pose><link name="link"><collision name="c"><geometry><box><size>0.2 12 1</size></box></geometry></collision><visual name="v"><geometry><box><size>0.2 12 1</size></box></geometry></visual></link></model>
+    <model name="west_wall"><static>true</static><pose>-6 0 0.5 0 0 0</pose><link name="link"><collision name="c"><geometry><box><size>0.2 12 1</size></box></geometry></collision><visual name="v"><geometry><box><size>0.2 12 1</size></box></geometry></visual></link></model>
+
+    <model name="crop_row_a"><static>true</static><pose>-1.5 1.2 0.35 0 0 0</pose><link name="link"><collision name="c"><geometry><box><size>0.35 5 0.7</size></box></geometry></collision><visual name="v"><geometry><box><size>0.35 5 0.7</size></box></geometry><material><diffuse>0.1 0.45 0.08 1</diffuse></material></visual></link></model>
+    <model name="crop_row_b"><static>true</static><pose>1.5 -1.2 0.35 0 0 0</pose><link name="link"><collision name="c"><geometry><box><size>0.35 5 0.7</size></box></geometry></collision><visual name="v"><geometry><box><size>0.35 5 0.7</size></box></geometry><material><diffuse>0.1 0.45 0.08 1</diffuse></material></visual></link></model>
+    <model name="crate"><static>true</static><pose>3.7 2.7 0.35 0 0 0.3</pose><link name="link"><collision name="c"><geometry><box><size>0.7 0.7 0.7</size></box></geometry></collision><visual name="v"><geometry><box><size>0.7 0.7 0.7</size></box></geometry><material><diffuse>0.5 0.25 0.08 1</diffuse></material></visual></link></model>
+  </world>
+</sdf>
+
