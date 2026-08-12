@@ -1,0 +1,9 @@
+[tool.pytest.ini_options]
+pythonpath = ["src/rover_mission"]
+testpaths = ["src/rover_mission/test"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+
