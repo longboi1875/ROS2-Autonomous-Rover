@@ -2,6 +2,7 @@ import math
 from pathlib import Path
 
 import rclpy
+from action_msgs.msg import GoalStatus
 from ament_index_python.packages import get_package_share_directory
 from geometry_msgs.msg import PoseStamped
 from nav2_msgs.action import NavigateToPose
@@ -63,7 +64,7 @@ class MissionManager(Node):
         result.add_done_callback(self._result)
 
     def _result(self, future) -> None:
-        if future.result().status != 4:  # action_msgs/GoalStatus.STATUS_SUCCEEDED
+        if future.result().status != GoalStatus.STATUS_SUCCEEDED:
             self._mission.fail()
             self._publish(f'FAILED status={future.result().status}')
             return
