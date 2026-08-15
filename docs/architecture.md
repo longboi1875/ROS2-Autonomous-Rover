@@ -6,8 +6,10 @@
 Gazebo sensors ──scan/imu/odom──> SLAM or AMCL ──map→odom TF──┐
                                                               │
 mission_manager ──NavigateToPose action──> Nav2 planner/controller
+                                                │ /cmd_vel_nav
+                                        velocity smoother
                                                 │
-                                           /cmd_vel_nav
+                                        /cmd_vel_smoothed
                                                 │
 LiDAR /scan ──> safety_monitor watchdog ─────────┤
                                                 │ healthy only
@@ -41,10 +43,10 @@ SLAM Toolbox or AMCL owns `map → odom`. Gazebo's differential drive owns
 
 ## Safety behaviour
 
-Nav2 is deliberately remapped to `/cmd_vel_nav`. The safety monitor is the only
-normal publisher to `/cmd_vel`, which Gazebo consumes. Motion remains blocked
+Nav2 is deliberately remapped to `/cmd_vel_nav`, which feeds its velocity
+smoother. The safety monitor gates `/cmd_vel_smoothed` and is the only normal
+publisher to `/cmd_vel`, which Gazebo consumes. Motion remains blocked
 until the first scan and is stopped when scans are more than 750 ms old. The
 timing logic uses a monotonic clock, so simulation-clock jumps cannot bypass it.
 
 This is a software interlock for simulation, not a certified emergency stop.
-

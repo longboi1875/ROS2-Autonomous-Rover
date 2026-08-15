@@ -12,7 +12,7 @@ from std_msgs.msg import String
 from std_srvs.srv import Trigger
 
 from .config import load_mission
-from .mission import Mission
+from .mission import Mission, MissionState
 
 
 class MissionManager(Node):
@@ -64,6 +64,8 @@ class MissionManager(Node):
         result.add_done_callback(self._result)
 
     def _result(self, future) -> None:
+        if self._mission.state is MissionState.CANCELLED:
+            return
         if future.result().status != GoalStatus.STATUS_SUCCEEDED:
             self._mission.fail()
             self._publish(f'FAILED status={future.result().status}')

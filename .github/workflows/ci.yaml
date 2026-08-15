@@ -1,0 +1,23 @@
+name: ROS 2 CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: jazzy
+      - uses: ros-tooling/action-ros-ci@v0.4
+        with:
+          package-name: rover_bringup rover_description rover_gazebo rover_mission rover_navigation rover_safety
+          target-ros2-distro: jazzy
+          colcon-defaults: |
+            {
+              "build": {"symlink-install": true, "event-handlers": ["console_direct+"]},
+              "test": {"event-handlers": ["console_direct+"]}
+            }

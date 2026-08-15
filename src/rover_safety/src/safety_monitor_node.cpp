@@ -14,7 +14,7 @@ class SafetyMonitor : public rclcpp::Node {
   SafetyMonitor() : Node("safety_monitor"), logic_(std::chrono::milliseconds(declare_parameter("scan_timeout_ms", 750))) {
     scan_sub_ = create_subscription<sensor_msgs::msg::LaserScan>("scan", rclcpp::SensorDataQoS(),
       [this](sensor_msgs::msg::LaserScan::ConstSharedPtr) { logic_.record_scan(std::chrono::steady_clock::now()); });
-    velocity_sub_ = create_subscription<geometry_msgs::msg::Twist>("cmd_vel_nav", 10,
+    velocity_sub_ = create_subscription<geometry_msgs::msg::Twist>("cmd_vel_smoothed", 10,
       [this](geometry_msgs::msg::Twist::ConstSharedPtr command) {
         if (logic_.motion_allowed(std::chrono::steady_clock::now())) velocity_pub_->publish(*command);
       });

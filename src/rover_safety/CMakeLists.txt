@@ -19,7 +19,11 @@ add_executable(safety_monitor src/safety_monitor_node.cpp)
 target_link_libraries(safety_monitor safety_logic)
 ament_target_dependencies(safety_monitor geometry_msgs rclcpp sensor_msgs std_msgs)
 
-install(TARGETS safety_logic safety_monitor EXPORT export_rover_safety DESTINATION lib/${PROJECT_NAME})
+install(TARGETS safety_logic safety_monitor EXPORT export_rover_safety
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib/${PROJECT_NAME}
+)
 install(DIRECTORY include/ DESTINATION include)
 
 if(BUILD_TESTING)
@@ -30,5 +34,5 @@ endif()
 
 ament_export_include_directories(include)
 ament_export_libraries(safety_logic)
+ament_export_targets(export_rover_safety HAS_LIBRARY_TARGET)
 ament_package()
-
